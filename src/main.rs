@@ -1,11 +1,21 @@
 use nannou::prelude::*;
 use std::collections::HashMap;
 
+const SPEED: usize = 4;
+
 fn main() {
     nannou::app(model).update(update).run();
 }
 
-fn update(_app: &App, _model: &mut Model, _update: Update) {}
+fn update(_app: &App, model: &mut Model, _update: Update) {
+    if !model.finished {
+        model.progress += model.speed;
+        if model.progress >= model.l_system.axiom.len() {
+            model.finished = true;
+            model.progress = model.l_system.axiom.len();
+        }
+    }
+}
 
 fn view(app: &App, model: &Model, frame: Frame) {
     let mut draw = app.draw();
@@ -17,7 +27,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
             app.window_rect().bottom(),
         ),
     );
-    model.l_system.draw(&mut turtle);
+    model.l_system.draw(&mut turtle, model.progress);
     draw.to_frame(app, &frame).unwrap();
 }
 
@@ -51,12 +61,15 @@ impl LSystem {
         }
     }
 
-    fn draw(&self, turtle: &mut Turtle) {
+    fn draw(&self, turtle: &mut Turtle, progress: usize) {
         let mut state_stack = Vec::new();
         let angle = self.angle;
         let distance = self.distance;
 
-        for c in self.axiom.chars() {
+        for (chars_drawn, c) in self.axiom.chars().enumerate() {
+            if chars_drawn >= progress {
+                break;
+            }
             match c {
                 'F' => {
                     turtle.forward(distance);
@@ -83,18 +96,26 @@ impl LSystem {
 
 struct Model {
     l_system: LSystem,
+    progress: usize,
+    speed: usize,
+    finished: bool,
 }
 
 fn model(app: &App) -> Model {
-    app.new_window().size(800, 600).view(view).build().unwrap();
+    app.new_window().size(800, 1000).view(view).build().unwrap();
     let axiom = "X".to_string();
     let mut rules = HashMap::new();
     rules.insert('X', "F-[[X]+X]+F[+FX]-X".to_string());
     rules.insert('F', "FF".to_string());
 
     let mut l_system = LSystem::new(axiom, rules, 22.5, 5.0);
-    l_system.iterate(5); // Increase the number of iterations for a more complex structure
-    Model { l_system }
+    l_system.iterate(6); // Increase the number of iterations for a more complex structure
+    Model {
+        l_system,
+        progress: 0,
+        speed: SPEED,
+        finished: false,
+    }
 }
 
 struct Turtle<'a> {
@@ -122,7 +143,7 @@ impl<'a> Turtle<'a> {
             .line()
             .start(self.position)
             .end(new_position)
-            .color(LIGHTGREEN)
+            .color(YELLOWGREEN)
             .stroke_weight(2.0);
         self.position = new_position;
     }
