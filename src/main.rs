@@ -1,13 +1,12 @@
-use clap::{Arg, Command};
+use crate::args::get_args;
 use lsystem::LSystem;
 use nannou::prelude::*;
 use std::collections::HashMap;
 use turtle::Turtle;
 
+mod args;
 mod lsystem;
 mod turtle;
-
-const SPEED: usize = 2;
 
 fn main() {
     nannou::app(model).update(update).run();
@@ -45,93 +44,74 @@ struct Model {
     finished: bool,
 }
 
-fn create_model(rules_x: String, rules_y: String, delta: f32, iterations: u32) -> Model {
+fn create_model(
+    rules_x: String,
+    rules_y: String,
+    delta: f32,
+    speed: usize,
+    iterations: u32,
+) -> Model {
     let axiom = "X".to_string();
 
     let mut rules = HashMap::new();
     rules.insert('X', rules_x);
     rules.insert('F', rules_y);
 
-    let mut l_system = LSystem::new(axiom, rules, delta, 5.0);
+    let mut l_system = LSystem::new(axiom, rules, delta, 4.0);
     l_system.iterate(iterations);
 
     Model {
         l_system,
         progress: 0,
-        speed: SPEED,
+        speed,
         finished: false,
     }
 }
 
 fn model(app: &App) -> Model {
     app.new_window().size(800, 1200).view(view).build().unwrap();
-    let (rules_x, rules_y, delta, iterations) = get_args();
-    create_model(rules_x, rules_y, delta, iterations)
+    let (rules_x, rules_y, delta, speed, iterations) = get_args();
+    create_model(rules_x, rules_y, delta, speed, iterations)
 }
 
-fn get_args() -> (String, String, f32, u32) {
-    let matches = Command::new("L-System Tree Drawer")
-        .version("1.0")
-        .author("Sammy Nouri <sammynouri@gmail.com>")
-        .about("Draws trees using an L-system")
-        .arg(
-            Arg::new("rules_x")
-                .short('x')
-                .long("rules_x")
-                .value_name("RULES_X")
-                .help("Sets the rules for X")
-                .default_value("F[+X][-X]FX")
-                .num_args(1),
-        )
-        .arg(
-            Arg::new("rules_f")
-                .short('f')
-                .long("rules_f")
-                .value_name("RULES_F")
-                .help("Sets the rules for F")
-                .num_args(1),
-        )
-        .arg(
-            Arg::new("delta")
-                .short('d')
-                .long("delta")
-                .value_name("DELTA")
-                .help("Sets the delta angle")
-                .default_value("25.7")
-                .num_args(1),
-        )
-        .arg(
-            Arg::new("iterations")
-                .short('i')
-                .long("iterations")
-                .value_name("ITERATIONS")
-                .help("Sets the number of iterations")
-                .default_value("7")
-                .num_args(1),
-        )
-        .get_matches();
+// fn calculate_tree_height(l_system: &LSystem, distance: f32, angle: f32) -> f32 {
+//     let mut max_y = 0.0;
+//     let mut current_position = Point2::new(0.0, 0.0);
+//     let mut current_angle = 90.0;
+//     let mut state_stack = Vec::new();
 
-    let rules_x: String = matches.get_one("rules_x").cloned().unwrap();
+//     for c in l_system.axiom.chars() {
+//         match c {
+//             'F' => {
+//                 let new_position = current_position
+//                     + vec2(
+//                         distance * current_angle.to_radians().cos(),
+//                         distance * current_angle.to_radians().sin(),
+//                     );
+//                 current_position = new_position;
 
-    let rules_f = matches
-        .get_one("rules_f")
-        .cloned()
-        .unwrap_or("FF")
-        .to_string();
+//                 if current_position.y > max_y {
+//                     max_y = current_position.y;
+//                 }
+//             }
+//             '+' => {
+//                 current_angle -= angle;
+//             }
+//             '-' => {
+//                 current_angle += angle;
+//             }
+//             '[' => {
+//                 state_stack.push((current_position, current_angle));
+//             }
+//             ']' => {
+//                 if let Some(state) = state_stack.pop() {
+//                     current_position = state.0;
+//                     current_angle = state.1;
+//                 }
+//             }
+//             _ => panic!("Invalid character in LSystem: {}", c),
+//         }
+//     }
 
-    let delta: f32 = matches
-        .get_one::<String>("delta")
-        .cloned()
-        .unwrap()
-        .parse::<f32>()
-        .unwrap();
-
-    let iterations: u32 = matches
-        .get_one::<String>("iterations")
-        .cloned()
-        .unwrap()
-        .parse::<u32>()
-        .unwrap();
-
-    (rules_x, rules_f, delta, iterations)
-}
+//     max_y
+// }

@@ -1,6 +1,6 @@
 use nannou::prelude::*;
 
-const WEIGHT: f32 = 1.0;
+const WEIGHT: f32 = 2.0;
 
 pub struct Turtle<'a> {
     draw: &'a mut Draw,
