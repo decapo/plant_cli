@@ -1,5 +1,7 @@
 use nannou::prelude::*;
 
+const WEIGHT: f32 = 1.0;
+
 pub struct Turtle<'a> {
     draw: &'a mut Draw,
     position: Point2,
@@ -26,7 +28,7 @@ impl<'a> Turtle<'a> {
             .start(self.position)
             .end(new_position)
             .color(YELLOWGREEN)
-            .stroke_weight(2.0);
+            .stroke_weight(WEIGHT);
         self.position = new_position;
     }
 

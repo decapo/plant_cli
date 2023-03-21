@@ -1,6 +1,7 @@
 use crate::turtle::Turtle;
 use std::collections::HashMap;
 
+#[derive(Clone)]
 pub struct LSystem {
     pub axiom: String,
     rules: HashMap<char, String>,
@@ -58,7 +59,8 @@ impl LSystem {
                         turtle.set_state(state);
                     }
                 }
-                _ => {}
+                'X' | 'Y' => {}
+                _ => panic!("Invalid character in LSystem: {}", c),
             }
         }
     }
