@@ -59,7 +59,7 @@ impl LSystem {
                         turtle.set_state(state);
                     }
                 }
-                'X' | 'Y' => {}
+                'X' => {}
                 _ => panic!("Invalid character in LSystem: {}", c),
             }
         }

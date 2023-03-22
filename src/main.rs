@@ -24,13 +24,14 @@ fn update(_app: &App, model: &mut Model, _update: Update) {
 
 fn view(app: &App, model: &Model, frame: Frame) {
     let mut draw = app.draw();
-    draw.background().color(BLACK);
+    draw.background().color(model.bg_color);
     let mut turtle = Turtle::new(
         &mut draw,
         (
             app.window_rect().left() + app.window_rect().w() / 2.0,
             app.window_rect().bottom(),
         ),
+        model.tree_color,
     );
     model.l_system.draw(&mut turtle, model.progress);
     draw.to_frame(app, &frame).unwrap();
@@ -42,14 +43,20 @@ struct Model {
     progress: usize,
     speed: usize,
     finished: bool,
+    bg_color: Rgb<u8>,
+    tree_color: Rgb<u8>,
 }
 
+#[allow(clippy::too_many_arguments)]
 fn create_model(
     rules_x: String,
     rules_y: String,
     delta: f32,
     speed: usize,
     iterations: u32,
+    bg_color: Rgb<u8>,
+    tree_color: Rgb<u8>,
+    scaling_factor: f32,
 ) -> Model {
     let axiom = "X".to_string();
 
@@ -57,7 +64,7 @@ fn create_model(
     rules.insert('X', rules_x);
     rules.insert('F', rules_y);
 
-    let mut l_system = LSystem::new(axiom, rules, delta, 4.0);
+    let mut l_system = LSystem::new(axiom, rules, delta, scaling_factor * 4.0);
     l_system.iterate(iterations);
 
     Model {
@@ -65,13 +72,25 @@ fn create_model(
         progress: 0,
         speed,
         finished: false,
+        bg_color,
+        tree_color,
     }
 }
 
 fn model(app: &App) -> Model {
     app.new_window().size(800, 1200).view(view).build().unwrap();
-    let (rules_x, rules_y, delta, speed, iterations) = get_args();
-    create_model(rules_x, rules_y, delta, speed, iterations)
+    let (rules_x, rules_y, delta, speed, iterations, bg_color, tree_color, scaling_factor) =
+        get_args();
+    create_model(
+        rules_x,
+        rules_y,
+        delta,
+        speed,
+        iterations,
+        bg_color,
+        tree_color,
+        scaling_factor,
+    )
 }
 
 // fn calculate_tree_height(l_system: &LSystem, distance: f32, angle: f32) -> f32 {

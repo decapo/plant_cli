@@ -6,14 +6,16 @@ pub struct Turtle<'a> {
     draw: &'a mut Draw,
     position: Point2,
     angle: f32,
+    color: Rgb<u8>,
 }
 
 impl<'a> Turtle<'a> {
-    pub fn new(draw: &'a mut Draw, position: (f32, f32)) -> Self {
+    pub fn new(draw: &'a mut Draw, position: (f32, f32), color: Rgb<u8>) -> Self {
         Self {
             draw,
             position: pt2(position.0, position.1),
             angle: 90.0,
+            color,
         }
     }
 
@@ -27,7 +29,7 @@ impl<'a> Turtle<'a> {
             .line()
             .start(self.position)
             .end(new_position)
-            .color(YELLOWGREEN)
+            .color(self.color)
             .stroke_weight(WEIGHT);
         self.position = new_position;
     }

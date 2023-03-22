@@ -1632,6 +1632,7 @@ version = "0.1.0"
 dependencies = [
  "clap",
  "nannou",
+ "nom",
  "rand 0.8.5",
 ]
 
