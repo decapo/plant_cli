@@ -28,6 +28,7 @@ pub fn get_args() -> (String, String, f32, usize, u32, Rgb<u8>, Rgb<u8>, f32) {
                 .long("rules_f")
                 .value_name("RULES_F")
                 .help("Sets the rules for F")
+                .default_value("FF")
                 .num_args(1),
         )
         .arg(
