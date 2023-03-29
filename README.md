@@ -40,7 +40,7 @@ Args: -x "F-[[X]+X]+F[+FX]-X" -f "FF" -d 22.5 -i 6 -t "(255,191,0)" -c 1.3
 <img width="815" alt="image" src="https://user-images.githubusercontent.com/30433379/226844712-90767add-501c-4b30-80fd-0c9673b40f0a.png">
 
 Args: -x "F[+X][-X]FX" -f "FF" -d 25.7 -i 7 -s 7 -t "(133,1,1)"
-<img width="817" alt="image" src="https://user-images.githubusercontent.com/30433379/226845496-71c152a6-108b-4933-b2a8-3950c25f27c3.png">
+![image](https://user-images.githubusercontent.com/30433379/228568511-b49eb4d4-905c-4f74-b7d7-83523e53608e.png)
 
 ## Issues
 Scale has to be adjusted until the whole tree shows as the height and width of the tree varies by the number of iterations and the rules. I tried to implement functionality that simulates the tree, measures the height/width and adjusts the scale accordingly but I failed because I suck at programming.
