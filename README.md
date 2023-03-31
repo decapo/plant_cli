@@ -1,6 +1,6 @@
 # plant_cli
 
-A CLI for creating pretty animations of procedurally generated 'plants' using L-systems based on ['The Algorithmic Beauty of Plants'](http://algorithmicbotany.org/papers/#abop) by Aristid Lindenmayer and Przemysław Prusinkiewicz.
+A CLI for creating pretty animations of procedurally generated 'plants' using L-systems based on [The Algorithmic Beauty of Plants](http://algorithmicbotany.org/papers/#abop) by Aristid Lindenmayer and Przemysław Prusinkiewicz.
 
 ## Installation
 Clone and build from source with Cargo.
