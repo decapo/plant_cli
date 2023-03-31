@@ -43,4 +43,4 @@ Args: -x "F[+X][-X]FX" -f "FF" -d 25.7 -i 7 -s 7 -t "(133,1,1)"
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/30433379/228568511-b49eb4d4-905c-4f74-b7d7-83523e53608e.png">
 
 ## Issues
-Scale has to be adjusted until the whole tree shows as the height and width of the tree varies by the number of iterations and the rules. I tried to implement functionality that simulates the tree, measures the height/width and adjusts the scale accordingly but I failed because I suck at programming.
+Scale has to be adjusted until the whole tree is visible in the window, because the height and width of the tree will vary based on the number of iterations and the rules. I tried to implement functionality that simulates the tree, measures the height/width and adjusts the scale accordingly but I failed because I suck at programming.
