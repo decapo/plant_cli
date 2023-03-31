@@ -4,6 +4,9 @@ A CLI for creating pretty animations of procedurally generated 'plants' using L-
 
 ## Installation
 Clone and build from source with Cargo.
+```
+cargo install --path PATH
+```
 
 ## Usage
 ```
